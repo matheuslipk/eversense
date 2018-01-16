@@ -2,16 +2,15 @@
 $root = $_SERVER['DOCUMENT_ROOT'];
 require_once $root.'/dao/ConexaoBD.php';
 
-class NoDao {
+class MedicaoDao {
   
-   private $tabela = "no";
+   private $tabela = "medicao";
     
-   public function inserirNo($no){            
-      $query = "INSERT INTO $this->tabela VALUES (NULL,?,?,?,?,?)";
+   public function inserirMedicao($mecicao){            
+      $query = "INSERT INTO $this->tabela VALUES (NULL,?,?,NULL)";
       $con = ConexaoBD::getConexao();
       $stmt = $con->prepare($query);
-      $stmt->bind_param("isssi", $no['id_usuario'], $no['ip'], $no['nome'], $no['descricao']
-            , $no['id_ambiente']);
+      $stmt->bind_param("id", $mecicao['id_sensor'], $mecicao['valor']);
       if($stmt->execute()){
          $stmt->close();
          $con->close();
@@ -23,13 +22,14 @@ class NoDao {
       return $erro;
    }
    
-   public function getNoByUsuario($no){
-      $query = "SELECT * FROM view_no WHERE id_usuario=?";
+   public function getMedicaoBySensor($sensor){
+      $query = "SELECT * FROM view_medicao WHERE id_sensor=? AND data BETWEEN ? AND ?";
 
       $con = ConexaoBD::getConexao();
       $stmt = $con->prepare($query);
       $stmt->prepare($query);
-      $stmt->bind_param('i', $no['id_usuario']);
+      $stmt->bind_param('i', $sensor['id_sensor'], $sensor['data_inicio'], 
+              $sensor['data_fim']);
       if($stmt->execute()){
          $result = $stmt->get_result();
          $array = $result->fetch_all(MYSQLI_ASSOC);
@@ -43,16 +43,17 @@ class NoDao {
       return NULL;    
    }
    
-   public function getNoByAmbiente($no){
-      $query = "SELECT * FROM view_no WHERE id_ambiente=?";
+   public function getMedicaoByAmbiente($ambiente){
+      $query = "SELECT * FROM view_medicao WHERE id_ambiente=? AND data BETWEEN ? AND ?";
 
       $con = ConexaoBD::getConexao();
       $stmt = $con->prepare($query);
       $stmt->prepare($query);
-      $stmt->bind_param('i', $no['id_ambiente']);
+      $stmt->bind_param('iss', $ambiente['id_ambiente'], $ambiente['data_inicio'], 
+              $ambiente['data_fim']);
       if($stmt->execute()){
          $result = $stmt->get_result();
-         $array = $result->fetch_assoc();
+         $array = $result->fetch_all(MYSQLI_ASSOC);
                      
          $stmt->close();
          $con->close();

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.4deb1
+-- version 4.6.5.2
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: 16-Jan-2018 às 01:34
--- Versão do servidor: 5.7.18-0ubuntu0.16.10.1
--- PHP Version: 7.0.18-0ubuntu0.16.10.1
+-- Host: 127.0.0.1
+-- Generation Time: 16-Jan-2018 às 14:57
+-- Versão do servidor: 10.1.21-MariaDB
+-- PHP Version: 7.0.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -71,8 +71,8 @@ CREATE TABLE `ambiente` (
 INSERT INTO `ambiente` (`id`, `id_usuario`, `nome`, `descricao`) VALUES
 (1, 1, 'Sala', ''),
 (2, 1, 'Quarto 1', ''),
-(4, 1, 'Quarto 2', 'descrição do ambiente'),
-(5, 1, 'quarto 2', 'descrição');
+(4, 1, 'Quarto 2', 'descriÃ§Ã£o do ambiente'),
+(5, 1, 'quarto 2', 'descriÃ§Ã£o');
 
 -- --------------------------------------------------------
 
@@ -117,7 +117,8 @@ CREATE TABLE `medicao` (
 
 INSERT INTO `medicao` (`id`, `id_sensor`, `valor`, `data`) VALUES
 (1, 1, 30.00, '2018-01-16 03:26:15'),
-(2, 1, 32.00, '2018-01-16 03:26:33');
+(2, 1, 32.00, '2018-01-16 03:26:33'),
+(4, 1, 30.70, '2018-01-16 13:31:40');
 
 -- --------------------------------------------------------
 
@@ -231,10 +232,10 @@ INSERT INTO `usuario` (`id`, `nome`, `email`, `senha`) VALUES
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `viewAcaoObjeto`
+-- Stand-in structure for view `view_acao_objeto`
 -- (See below for the actual view)
 --
-CREATE TABLE `viewAcaoObjeto` (
+CREATE TABLE `view_acao_objeto` (
 `id_objeto` int(11)
 ,`nome_objeto` varchar(100)
 ,`id_acao` int(11)
@@ -244,10 +245,10 @@ CREATE TABLE `viewAcaoObjeto` (
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `viewAmbienteNo`
+-- Stand-in structure for view `view_ambiente_no`
 -- (See below for the actual view)
 --
-CREATE TABLE `viewAmbienteNo` (
+CREATE TABLE `view_ambiente_no` (
 `id_ambiente` int(11)
 ,`nome_ambiente` varchar(100)
 ,`id_objeto` int(11)
@@ -257,10 +258,10 @@ CREATE TABLE `viewAmbienteNo` (
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `viewMedicao`
+-- Stand-in structure for view `view_medicao`
 -- (See below for the actual view)
 --
-CREATE TABLE `viewMedicao` (
+CREATE TABLE `view_medicao` (
 `id_medicao` int(11)
 ,`id_ambiente` int(11)
 ,`id_sensor` int(11)
@@ -271,10 +272,10 @@ CREATE TABLE `viewMedicao` (
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `viewNo`
+-- Stand-in structure for view `view_no`
 -- (See below for the actual view)
 --
-CREATE TABLE `viewNo` (
+CREATE TABLE `view_no` (
 `id_no` int(11)
 ,`id_usuario` int(11)
 ,`nome_usuario` varchar(100)
@@ -288,10 +289,10 @@ CREATE TABLE `viewNo` (
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `viewSensor`
+-- Stand-in structure for view `view_sensor`
 -- (See below for the actual view)
 --
-CREATE TABLE `viewSensor` (
+CREATE TABLE `view_sensor` (
 `id` int(11)
 ,`id_no` int(11)
 ,`nome_no` varchar(100)
@@ -306,47 +307,47 @@ CREATE TABLE `viewSensor` (
 -- --------------------------------------------------------
 
 --
--- Structure for view `viewAcaoObjeto`
+-- Structure for view `view_acao_objeto`
 --
-DROP TABLE IF EXISTS `viewAcaoObjeto`;
+DROP TABLE IF EXISTS `view_acao_objeto`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `viewAcaoObjeto`  AS  select `ao`.`id_objeto` AS `id_objeto`,`o`.`nome` AS `nome_objeto`,`ao`.`id_acao` AS `id_acao`,`a`.`nome` AS `nome_acao` from ((`acao_objeto` `ao` join `acao` `a`) join `objeto` `o`) where ((`ao`.`id_acao` = `a`.`id`) and (`ao`.`id_objeto` = `o`.`id`)) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_acao_objeto`  AS  select `ao`.`id_objeto` AS `id_objeto`,`o`.`nome` AS `nome_objeto`,`ao`.`id_acao` AS `id_acao`,`a`.`nome` AS `nome_acao` from ((`acao_objeto` `ao` join `acao` `a`) join `objeto` `o`) where ((`ao`.`id_acao` = `a`.`id`) and (`ao`.`id_objeto` = `o`.`id`)) ;
 
 -- --------------------------------------------------------
 
 --
--- Structure for view `viewAmbienteNo`
+-- Structure for view `view_ambiente_no`
 --
-DROP TABLE IF EXISTS `viewAmbienteNo`;
+DROP TABLE IF EXISTS `view_ambiente_no`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `viewAmbienteNo`  AS  select `ao`.`id_ambiente` AS `id_ambiente`,`a`.`nome` AS `nome_ambiente`,`ao`.`id_objeto` AS `id_objeto`,`o`.`nome` AS `nome_objeto` from ((`ambiente_objeto` `ao` join `ambiente` `a`) join `objeto` `o`) where ((`ao`.`id_ambiente` = `a`.`id`) and (`ao`.`id_objeto` = `o`.`id`)) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_ambiente_no`  AS  select `ao`.`id_ambiente` AS `id_ambiente`,`a`.`nome` AS `nome_ambiente`,`ao`.`id_objeto` AS `id_objeto`,`o`.`nome` AS `nome_objeto` from ((`ambiente_objeto` `ao` join `ambiente` `a`) join `objeto` `o`) where ((`ao`.`id_ambiente` = `a`.`id`) and (`ao`.`id_objeto` = `o`.`id`)) ;
 
 -- --------------------------------------------------------
 
 --
--- Structure for view `viewMedicao`
+-- Structure for view `view_medicao`
 --
-DROP TABLE IF EXISTS `viewMedicao`;
+DROP TABLE IF EXISTS `view_medicao`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `viewMedicao`  AS  select `m`.`id` AS `id_medicao`,`s`.`id_ambiente` AS `id_ambiente`,`m`.`id_sensor` AS `id_sensor`,`m`.`valor` AS `valor`,`m`.`data` AS `data` from (`medicao` `m` join `sensor` `s`) where (`m`.`id_sensor` = `s`.`id`) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_medicao`  AS  select `m`.`id` AS `id_medicao`,`s`.`id_ambiente` AS `id_ambiente`,`m`.`id_sensor` AS `id_sensor`,`m`.`valor` AS `valor`,`m`.`data` AS `data` from (`medicao` `m` join `sensor` `s`) where (`m`.`id_sensor` = `s`.`id`) ;
 
 -- --------------------------------------------------------
 
 --
--- Structure for view `viewNo`
+-- Structure for view `view_no`
 --
-DROP TABLE IF EXISTS `viewNo`;
+DROP TABLE IF EXISTS `view_no`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `viewNo`  AS  select `n`.`id` AS `id_no`,`n`.`id_usuario` AS `id_usuario`,`u`.`nome` AS `nome_usuario`,`n`.`ip` AS `ip_no`,`n`.`nome` AS `nome_no`,`n`.`descricao` AS `descricao`,`n`.`id_ambiente` AS `id_ambiente`,`a`.`nome` AS `nome_ambiente` from ((`no` `n` join `usuario` `u`) join `ambiente` `a`) where ((`u`.`id` = `n`.`id_usuario`) and (`n`.`id_ambiente` = `a`.`id`)) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_no`  AS  select `n`.`id` AS `id_no`,`n`.`id_usuario` AS `id_usuario`,`u`.`nome` AS `nome_usuario`,`n`.`ip` AS `ip_no`,`n`.`nome` AS `nome_no`,`n`.`descricao` AS `descricao`,`n`.`id_ambiente` AS `id_ambiente`,`a`.`nome` AS `nome_ambiente` from ((`no` `n` join `usuario` `u`) join `ambiente` `a`) where ((`u`.`id` = `n`.`id_usuario`) and (`n`.`id_ambiente` = `a`.`id`)) ;
 
 -- --------------------------------------------------------
 
 --
--- Structure for view `viewSensor`
+-- Structure for view `view_sensor`
 --
-DROP TABLE IF EXISTS `viewSensor`;
+DROP TABLE IF EXISTS `view_sensor`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `viewSensor`  AS  select `s`.`id` AS `id`,`s`.`id_no` AS `id_no`,`n`.`nome` AS `nome_no`,`s`.`id_tipo_sensor` AS `id_tipo_sensor`,`ts`.`nome` AS `nome`,`s`.`ip` AS `ip`,`s`.`mac` AS `mac`,`s`.`nome` AS `nome_sensor`,`s`.`descricao` AS `descricao` from ((`sensor` `s` join `no` `n`) join `tipo_sensor` `ts`) where ((`s`.`id_no` = `n`.`id`) and (`s`.`id_tipo_sensor` = `ts`.`id`)) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_sensor`  AS  select `s`.`id` AS `id`,`s`.`id_no` AS `id_no`,`n`.`nome` AS `nome_no`,`s`.`id_tipo_sensor` AS `id_tipo_sensor`,`ts`.`nome` AS `nome`,`s`.`ip` AS `ip`,`s`.`mac` AS `mac`,`s`.`nome` AS `nome_sensor`,`s`.`descricao` AS `descricao` from ((`sensor` `s` join `no` `n`) join `tipo_sensor` `ts`) where ((`s`.`id_no` = `n`.`id`) and (`s`.`id_tipo_sensor` = `ts`.`id`)) ;
 
 --
 -- Indexes for dumped tables
@@ -453,7 +454,7 @@ ALTER TABLE `instituicao`
 -- AUTO_INCREMENT for table `medicao`
 --
 ALTER TABLE `medicao`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `no`
 --
