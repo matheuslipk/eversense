@@ -2,15 +2,15 @@
 $root = $_SERVER['DOCUMENT_ROOT'];
 require_once $root.'/dao/ConexaoBD.php';
 
-class MedicaoDao {
+class ObjetoDao {
   
-   private $tabela = "medicao";
+   private $tabela = "objeto";
     
-   public function inserirMedicao($medicao){            
-      $query = "INSERT INTO $this->tabela VALUES (NULL,?,?,NULL)";
+   public function inserirObjeto($objeto){            
+      $query = "INSERT INTO $this->tabela VALUES (NULL,?,?,?)";
       $con = ConexaoBD::getConexao();
       $stmt = $con->prepare($query);
-      $stmt->bind_param("id", $medicao['id_sensor'], $medicao['valor']);
+      $stmt->bind_param("iss", $objeto['id_ambiente'], $objeto['nome'], $objeto['descricao']);
       if($stmt->execute()){
          $stmt->close();
          $con->close();
@@ -22,14 +22,11 @@ class MedicaoDao {
       return $erro;
    }
    
-   public function getMedicaoBySensor($sensor){
-      $query = "SELECT * FROM view_medicao WHERE id_sensor=? AND data BETWEEN ? AND ?";
+   public function getObjetos(){
+      $query = "SELECT * FROM $this->tabela";
 
       $con = ConexaoBD::getConexao();
       $stmt = $con->prepare($query);
-      $stmt->prepare($query);
-      $stmt->bind_param('i', $sensor['id_sensor'], $sensor['data_inicio'], 
-              $sensor['data_fim']);
       if($stmt->execute()){
          $result = $stmt->get_result();
          $array = $result->fetch_all(MYSQLI_ASSOC);
@@ -43,14 +40,12 @@ class MedicaoDao {
       return NULL;    
    }
    
-   public function getMedicaoByAmbiente($ambiente){
-      $query = "SELECT * FROM view_medicao WHERE id_ambiente=? AND data BETWEEN ? AND ?";
+   public function getObjetosByAmbiente($objeto){
+      $query = "SELECT * FROM $this->tabela WHERE id_ambiente=?";
 
       $con = ConexaoBD::getConexao();
       $stmt = $con->prepare($query);
-      $stmt->prepare($query);
-      $stmt->bind_param('iss', $ambiente['id_ambiente'], $ambiente['data_inicio'], 
-              $ambiente['data_fim']);
+      $stmt->bind_param("i", $objeto['id_ambiente']);
       if($stmt->execute()){
          $result = $stmt->get_result();
          $array = $result->fetch_all(MYSQLI_ASSOC);
@@ -63,5 +58,5 @@ class MedicaoDao {
       $con->close();
       return NULL;    
    }
-      
+   
 }

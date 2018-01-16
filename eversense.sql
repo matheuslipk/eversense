@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 16-Jan-2018 às 14:57
+-- Generation Time: 16-Jan-2018 às 15:43
 -- Versão do servidor: 10.1.21-MariaDB
 -- PHP Version: 7.0.15
 
@@ -38,7 +38,8 @@ CREATE TABLE `acao` (
 
 INSERT INTO `acao` (`id`, `nome`, `descricao`) VALUES
 (1, 'Ligar', ''),
-(2, 'Desligar', '');
+(2, 'Desligar', ''),
+(3, 'Aumenta Volume', '');
 
 -- --------------------------------------------------------
 
@@ -50,6 +51,15 @@ CREATE TABLE `acao_objeto` (
   `id_acao` int(11) NOT NULL,
   `id_objeto` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `acao_objeto`
+--
+
+INSERT INTO `acao_objeto` (`id_acao`, `id_objeto`) VALUES
+(1, 1),
+(1, 2),
+(2, 1);
 
 -- --------------------------------------------------------
 
@@ -73,17 +83,6 @@ INSERT INTO `ambiente` (`id`, `id_usuario`, `nome`, `descricao`) VALUES
 (2, 1, 'Quarto 1', ''),
 (4, 1, 'Quarto 2', 'descriÃ§Ã£o do ambiente'),
 (5, 1, 'quarto 2', 'descriÃ§Ã£o');
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `ambiente_objeto`
---
-
-CREATE TABLE `ambiente_objeto` (
-  `id_ambiente` int(11) NOT NULL,
-  `id_objeto` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -161,7 +160,8 @@ CREATE TABLE `objeto` (
 --
 
 INSERT INTO `objeto` (`id`, `id_ambiente`, `nome`, `descricao`) VALUES
-(1, 1, 'Ar condicionado', '');
+(1, 1, 'Ar condicionado', ''),
+(2, 1, 'Televisão', '');
 
 -- --------------------------------------------------------
 
@@ -245,19 +245,6 @@ CREATE TABLE `view_acao_objeto` (
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `view_ambiente_no`
--- (See below for the actual view)
---
-CREATE TABLE `view_ambiente_no` (
-`id_ambiente` int(11)
-,`nome_ambiente` varchar(100)
-,`id_objeto` int(11)
-,`nome_objeto` varchar(100)
-);
-
--- --------------------------------------------------------
-
---
 -- Stand-in structure for view `view_medicao`
 -- (See below for the actual view)
 --
@@ -316,15 +303,6 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
--- Structure for view `view_ambiente_no`
---
-DROP TABLE IF EXISTS `view_ambiente_no`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_ambiente_no`  AS  select `ao`.`id_ambiente` AS `id_ambiente`,`a`.`nome` AS `nome_ambiente`,`ao`.`id_objeto` AS `id_objeto`,`o`.`nome` AS `nome_objeto` from ((`ambiente_objeto` `ao` join `ambiente` `a`) join `objeto` `o`) where ((`ao`.`id_ambiente` = `a`.`id`) and (`ao`.`id_objeto` = `o`.`id`)) ;
-
--- --------------------------------------------------------
-
---
 -- Structure for view `view_medicao`
 --
 DROP TABLE IF EXISTS `view_medicao`;
@@ -372,13 +350,6 @@ ALTER TABLE `acao_objeto`
 ALTER TABLE `ambiente`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_usuario` (`id_usuario`);
-
---
--- Indexes for table `ambiente_objeto`
---
-ALTER TABLE `ambiente_objeto`
-  ADD PRIMARY KEY (`id_ambiente`,`id_objeto`),
-  ADD KEY `id_objeto` (`id_objeto`);
 
 --
 -- Indexes for table `instituicao`
@@ -439,7 +410,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT for table `acao`
 --
 ALTER TABLE `acao`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `ambiente`
 --
@@ -464,7 +435,7 @@ ALTER TABLE `no`
 -- AUTO_INCREMENT for table `objeto`
 --
 ALTER TABLE `objeto`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `sensor`
 --
@@ -496,13 +467,6 @@ ALTER TABLE `acao_objeto`
 --
 ALTER TABLE `ambiente`
   ADD CONSTRAINT `ambiente_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`);
-
---
--- Limitadores para a tabela `ambiente_objeto`
---
-ALTER TABLE `ambiente_objeto`
-  ADD CONSTRAINT `ambiente_objeto_ibfk_2` FOREIGN KEY (`id_objeto`) REFERENCES `objeto` (`id`),
-  ADD CONSTRAINT `ambiente_objeto_ibfk_3` FOREIGN KEY (`id_ambiente`) REFERENCES `ambiente` (`id`);
 
 --
 -- Limitadores para a tabela `medicao`
